@@ -31,7 +31,7 @@ class ChicagoCTATrainService(CheckRideService):
 
         response = requests.get('http://lapi.transitchicago.com/api/1.0/ttarrivals.aspx?'
                                 'key=%s&rt=%s&stpid=%s&max=2&outputType=JSON' %
-                                (os.environ['%s-api_key' % agency], route, stop))
+                                (os.environ['%s_api_key' % agency.replace('-', '_')], route, stop))
 
         response = response.json()['ctatt']
 
@@ -54,5 +54,5 @@ class ChicagoCTATrainService(CheckRideService):
         return minutes, stop_name
 
 if __name__ == '__main__':
-    os.environ['chicago-cta-train-api_key'] = 'api_key'
+    os.environ['chicago_cta_train_api_key'] = 'api_key'
     print ChicagoCTATrainService().check_ride('green', '30213', 'chicago-cta-train')
