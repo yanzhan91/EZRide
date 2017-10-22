@@ -104,6 +104,6 @@ def __respond(message, status):
 if __name__ == '__main__':
     os.environ['user_table'] = 'EZTransit_Users'
     os.environ['audit_table'] = 'EZTransit_Audit'
-    os.environ['chicago-cta-train-api_key'] = 'api_key'
-    os.environ['chicago-cta-bus-api_key'] = 'api_key'
+    os.environ['chicago_cta_train_api_key'] = 'api_key'
+    os.environ['chicago_cta_bus_api_key'] = 'api_key'
     app.run()
