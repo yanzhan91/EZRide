@@ -8,7 +8,7 @@ class AustinMetroBusStopNames:
     @staticmethod
     def get_stop_name(stop):
         try:
-            user_table = boto3.resource('dynamodb').Table('AustinTransit_Stops')
+            user_table = boto3.resource('dynamodb', region_name='us-east-1').Table('AustinTransit_Stops')
             response = user_table.query(
                 KeyConditionExpression=Key('stop_id').eq(int(stop)),
                 Limit=1
