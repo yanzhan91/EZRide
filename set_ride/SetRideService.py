@@ -23,5 +23,5 @@ def set_ride(user, route, stop, preset, agency):
         return 0
 
 if __name__ == '__main__':
-    os.environ['user_table'] = 'EZRide_Users'
+    os.environ['user_table'] = 'EZTransit_Users'
     set_ride('123', '7', '1174', '1', 'chicago-cta-bus')

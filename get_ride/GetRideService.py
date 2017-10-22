@@ -19,5 +19,5 @@ def get_ride(user, preset, agency):
 
 
 if __name__ == '__main__':
-    os.environ['user_table'] = 'EZRide_Users'
+    os.environ['user_table'] = 'EZTransit_Users'
     print get_ride('123', '1', 'chicago-cta-bus')
