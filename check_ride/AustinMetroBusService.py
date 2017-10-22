@@ -2,6 +2,7 @@ from CheckRideService import CheckRideService
 from google.transit import gtfs_realtime_pb2
 import time
 import boto3
+from helper.AustinMetroBusStopNames import AustinMetroBusStopNames
 
 
 class AustinMetroBusService(CheckRideService):
@@ -30,14 +31,11 @@ class AustinMetroBusService(CheckRideService):
         minutes_list = []
 
         for stu in stop_time_updates:
-            print 'stop_id = %s\tdelays = %s\ttime = %s' \
-                  % (stu.stop_id, stu.arrival.delay,
-                     time.strftime("%a, %d %b %Y %H:%M:%S +0000", time.localtime(stu.arrival.time)))
             minutes = int((stu.arrival.time - current_time) / 60)
             if minutes >= 0:
                 minutes_list.append(minutes)
 
-        return sorted(minutes_list)[:2]
+        return sorted(minutes_list)[:2], AustinMetroBusStopNames.get_stop_name(stop)
 
 
 if __name__ == '__main__':
