@@ -2,6 +2,7 @@ from ChicagoCTABusService import ChicagoCTABusService
 from ChicagoCTATrainService import ChicagoCTATrainService
 from AustinMetroBusService import AustinMetroBusService
 from SanFranciscoMuniBusService import SanFranciscoMuniBusService
+from LosAngelesMetroBusService import LosAngelesMetroBusService
 
 
 class CheckRideServiceFactory(object):
@@ -16,4 +17,6 @@ class CheckRideServiceFactory(object):
             return AustinMetroBusService()
         if agency == 'sf-muni-bus':
             return SanFranciscoMuniBusService()
+        if agency == 'la-metro-bus':
+            return LosAngelesMetroBusService()
         return None
