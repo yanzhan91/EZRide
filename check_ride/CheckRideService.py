@@ -1,4 +1,4 @@
 class CheckRideService(object):
 
-    def check_ride(self, bus, stop, agency):
+    def check_ride(self, route, stop, agency):
         pass

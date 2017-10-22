@@ -15,18 +15,18 @@ def index():
 
 @app.route('/check', methods=['GET'])
 def check():
-    bus = request.args.get('bus')
+    route = request.args.get('route')
     stop = request.args.get('stop')
     agency = request.args.get('agency')
 
-    if not bus or not stop or not agency:
-        return __respond('Invalid bus, stop, or agency: %s, %s, %s' % (bus, stop, agency), status=400)
+    if not route or not stop or not agency:
+        return __respond('Invalid route, stop, or agency: %s, %s, %s' % (route, stop, agency), status=400)
 
     service = CheckRideServiceFactory.get_service(agency)
     if not service:
         return __respond('Internal server error: Failed to get agency check_ride service: %s' % agency, status=500)
 
-    minutes, stop_name = service.check_ride(bus, stop, agency)
+    minutes, stop_name = service.check_ride(route, stop, agency)
 
     return __respond({'minutes': minutes, 'stop_name': stop_name}, status=200)
 
@@ -39,9 +39,9 @@ def add():
         user = None
 
     try:
-        bus = request.form['bus']
+        route = request.form['route']
     except KeyError:
-        bus = None
+        route = None
 
     try:
         stop = request.form['stop']
@@ -61,11 +61,11 @@ def add():
     if not user:
         return __respond('User missing or invalid', status=400)
 
-    if not bus or not stop or not agency:
+    if not route or not stop or not agency:
         return __respond(
-            'Invalid bus, stop, preset or agency: %s, %s, %s, %s' % (bus, stop, preset, agency), status=400)
+            'Invalid route, stop, preset or agency: %s, %s, %s, %s' % (route, stop, preset, agency), status=400)
 
-    if set_ride(user, bus, stop, preset, agency):
+    if set_ride(user, route, stop, preset, agency):
         __respond('Internal server error: Failed to set ride', status=500)
 
     return 'Adding'
@@ -83,13 +83,13 @@ def get():
     if not agency:
         return __respond('Invalid agency: %s' % agency, status=400)
 
-    bus, stop = get_ride(user, preset, agency)
+    route, stop = get_ride(user, preset, agency)
 
-    if not bus or not stop:
+    if not route or not stop:
         return __respond('Preset not set: %s' % preset, status=400)
 
     service = CheckRideServiceFactory.get_service(agency)
-    minutes, stop_name = service.check_ride(bus, stop, agency)
+    minutes, stop_name = service.check_ride(route, stop, agency)
 
     return __respond({'minutes': minutes, 'stop_name': stop_name}, status=200)
 

@@ -5,9 +5,10 @@ import os
 
 class ChicagoCTABusService(CheckRideService):
 
-    def check_ride(self, bus, stop, agency):
+    def check_ride(self, route, stop, agency):
         response = requests.get('http://www.ctabustracker.com/bustime/api/v2/getpredictions?'
-                                'key=%s&rt=%s&stpid=%s&top=2&format=json&top=2' % (os.environ['api_key'], bus, stop))
+                                'key=%s&rt=%s&stpid=%s&top=2&format=json' %
+                                (os.environ['%s-api_key' % agency], route, stop))
 
         minutes = []
 
@@ -25,5 +26,5 @@ class ChicagoCTABusService(CheckRideService):
 
 
 if __name__ == '__main__':
-    os.environ['api_key'] = 'api_key'
+    os.environ['chicago-cta-bus-api_key'] = 'api_key'
     print ChicagoCTABusService().check_ride('151', '1108', 'chicago-cta-bus')

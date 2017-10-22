@@ -2,7 +2,7 @@ import boto3
 import os
 
 
-def set_ride(user, bus, stop, preset, agency):
+def set_ride(user, route, stop, preset, agency):
     update_exp = 'SET #p = :b'
     user_table = boto3.resource('dynamodb').Table(os.environ['user_table'])
     response = user_table.update_item(
@@ -14,7 +14,7 @@ def set_ride(user, bus, stop, preset, agency):
             '#p': '%s-%s' % (agency, preset)
         },
         ExpressionAttributeValues={
-            ':b': {'bus': bus, 'stop': stop}
+            ':b': {'route': route, 'stop': stop}
         }
     )['ResponseMetadata']
     if response['HTTPStatusCode'] != 200:

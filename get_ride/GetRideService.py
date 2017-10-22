@@ -13,7 +13,7 @@ def get_ride(user, preset, agency):
     try:
         user = response['Items'][0]
         data = user['%s-%s' % (agency, preset)]
-        return data['bus'], data['stop']
+        return data['route'], data['stop']
     except (KeyError, IndexError):
         return None, None
 
