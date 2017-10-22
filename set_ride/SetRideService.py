@@ -4,7 +4,7 @@ import os
 
 def set_ride(user, route, stop, preset, agency):
     update_exp = 'SET #p = :b'
-    user_table = boto3.resource('dynamodb').Table(os.environ['user_table'])
+    user_table = boto3.resource('dynamodb', region_name='us-east-1').Table(os.environ['user_table'])
     response = user_table.update_item(
         Key={
             'user': user

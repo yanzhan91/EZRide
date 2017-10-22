@@ -4,7 +4,7 @@ import os
 
 
 def get_ride(user, preset, agency):
-    user_table = boto3.resource('dynamodb').Table(os.environ['user_table'])
+    user_table = boto3.resource('dynamodb', region_name='us-east-1').Table(os.environ['user_table'])
     response = user_table.query(
         KeyConditionExpression=Key('user').eq(user),
         Limit=1
