@@ -35,8 +35,8 @@ class ChicagoCTATrainService(CheckRideService):
 
         response = response.json()['ctatt']
 
-        if response['errCd'] != '0':
-            log.error(response['errNm'])
+        if response['errCd'] != '0' or 'eta' not in response:
+            log.error(response)
             return minutes, None
 
         predictions = response['eta']
@@ -47,8 +47,12 @@ class ChicagoCTATrainService(CheckRideService):
                       pytz.utc.localize(datetime.utcnow(), is_dst=None)
             minutes.append(int(arrival.total_seconds() / 60))
 
-        return minutes, predictions[0]['staNm']
+        stop_name = predictions[0]['staNm']
+        stop_name.replaceFirst('-', ' and ')
+        stop_name.replaceFirst('/', ' and ')
+
+        return minutes, stop_name
 
 if __name__ == '__main__':
     os.environ['chicago-cta-train-api_key'] = 'api_key'
-    print ChicagoCTATrainService().check_ride('blue', '30375', 'chicago-cta-train')
+    print ChicagoCTATrainService().check_ride('green', '30213', 'chicago-cta-train')
