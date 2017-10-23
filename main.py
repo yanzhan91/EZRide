@@ -65,10 +65,10 @@ def add():
         return __respond(
             'Invalid route, stop, preset or agency: %s, %s, %s, %s' % (route, stop, preset, agency), status=400)
 
-    if set_ride(user, route, stop, preset, agency):
-        __respond('Internal server error: Failed to set ride', status=500)
+    if set_ride(user, route, stop, preset, agency) != 200:
+        return __respond('Internal server error: Failed to set ride', status=500)
 
-    return 'Adding'
+    return __respond('success', status=200)
 
 
 @app.route('/get', methods=['GET'])

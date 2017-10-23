@@ -17,10 +17,7 @@ def set_ride(user, route, stop, preset, agency):
             ':b': {'route': route, 'stop': stop}
         }
     )['ResponseMetadata']
-    if response['HTTPStatusCode'] != 200:
-        return 1
-    else:
-        return 0
+    return response['HTTPStatusCode']
 
 if __name__ == '__main__':
     os.environ['user_table'] = 'EZTransit_Users'
