@@ -91,7 +91,7 @@ def get():
     service = CheckRideServiceFactory.get_service(agency)
     minutes, stop_name = service.check_ride(route, stop, agency)
 
-    return __respond({'minutes': minutes, 'stop_name': stop_name}, status=200)
+    return __respond({'minutes': minutes, 'stop_name': stop_name, 'route': route, 'stop': stop}, status=200)
 
 
 def __respond(message, status):
