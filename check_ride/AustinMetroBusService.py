@@ -19,12 +19,12 @@ class AustinMetroBusService(CheckRideService):
                 filter(lambda x: x.trip_update.trip.route_id == route, feed.entity)))
 
         if len(stop_time_updates_raw) == 0:
-            return []
+            return [], None
 
         stop_time_updates = filter(lambda x: x.stop_id == stop, reduce(list.__add__, stop_time_updates_raw))
 
         if len(stop_time_updates) == 0:
-            return []
+            return [], None
 
         current_time = time.time()
 
