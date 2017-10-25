@@ -4,6 +4,7 @@ from flask import Flask, request, Response, jsonify
 from check_ride.CheckRideServiceFactory import CheckRideServiceFactory
 from get_ride.GetRideService import get_ride
 from set_ride.SetRideService import set_ride
+from helper.ResponseConstants import ResponseConstants
 
 app = Flask(__name__)
 
@@ -20,15 +21,17 @@ def check():
     agency = request.args.get('agency')
 
     if not route or not stop or not agency:
-        return __respond('Invalid route, stop, or agency: %s, %s, %s' % (route, stop, agency), status=400)
+        return __respond(ResponseConstants.CHK_MISSING_PARAM, [route, stop, agency])
 
     service = CheckRideServiceFactory.get_service(agency)
     if not service:
-        return __respond('Internal server error: Failed to get agency check_ride service: %s' % agency, status=500)
+        return __respond(ResponseConstants.CHK_MISSING_SERVICE)
 
     minutes, stop_name = service.check_ride(route, stop, agency)
 
-    return __respond({'minutes': minutes, 'stop_name': stop_name}, status=200)
+    response = ResponseConstants.SUCCESS_RESP
+    response['message'] = {'minutes': minutes, 'stop_name': stop_name}
+    return __respond(response)
 
 
 @app.route('/add', methods=['POST'])
@@ -59,16 +62,17 @@ def add():
         agency = None
 
     if not user:
-        return __respond('User missing or invalid', status=400)
+        return __respond(ResponseConstants.ALL_MISSING_USER)
 
-    if not route or not stop or not agency:
-        return __respond(
-            'Invalid route, stop, preset or agency: %s, %s, %s, %s' % (route, stop, preset, agency), status=400)
+    if not route or not stop or not preset or not agency:
+        return __respond(ResponseConstants.SET_MISSING_PARAM, [route, stop, preset, agency])
 
     if set_ride(user, route, stop, preset, agency) != 200:
-        return __respond('Internal server error: Failed to set ride', status=500)
+        return __respond(ResponseConstants.SET_FAILURE, [route, stop, preset, agency])
 
-    return __respond('success', status=200)
+    response = ResponseConstants.SUCCESS_RESP
+    response['message'] = 'success'
+    return __respond(response)
 
 
 @app.route('/get', methods=['GET'])
@@ -78,27 +82,34 @@ def get():
     agency = request.args.get('agency')
 
     if not user:
-        return __respond('User missing or invalid', status=400)
+        return __respond(ResponseConstants.ALL_MISSING_USER)
 
     if not agency:
-        return __respond('Invalid agency: %s' % agency, status=400)
+        return __respond(ResponseConstants.GET_MISSING_AGENCY)
 
     route, stop = get_ride(user, preset, agency)
 
     if not route or not stop:
-        return __respond('Preset not set: %s' % preset, status=400)
+        return __respond(ResponseConstants.GET_MISSING_ROUTE_STOP, [preset])
 
     service = CheckRideServiceFactory.get_service(agency)
     minutes, stop_name = service.check_ride(route, stop, agency)
 
-    return __respond({'minutes': minutes, 'stop_name': stop_name, 'route': route, 'stop': stop}, status=200)
+    response = ResponseConstants.SUCCESS_RESP
+    response['message'] = {'minutes': minutes, 'stop_name': stop_name, 'route': route, 'stop': stop}
+    return __respond(response)
 
 
-def __respond(message, status):
-    json = jsonify(status=status, message=message).get_data(as_text=True)
-    if status in [400, 500]:
+def __respond(error_constant, params=[]):
+    params = map((lambda x: 'None' if not x else x), params)
+    if isinstance(error_constant['message'], dict):
+        message = error_constant['message']
+    else:
+        message = '%s%s%s' % (error_constant['message'], ': ' if len(params) else '', ', '.join(params))
+    json = jsonify(error_code=error_constant['error'], message=message).get_data(as_text=True)
+    if error_constant['status'] in [400, 500]:
         logging.warn(json)
-    return Response(str(json), status=status, mimetype='application/json')
+    return Response(json, status=error_constant['status'], mimetype='application/json')
 
 
 if __name__ == '__main__':
