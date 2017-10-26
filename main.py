@@ -9,11 +9,6 @@ from helper.ResponseConstants import ResponseConstants
 app = Flask(__name__)
 
 
-@app.route('/')
-def index():
-    return 'Hello World!'
-
-
 @app.route('/check', methods=['GET'])
 def check():
     route = request.args.get('route')
@@ -30,7 +25,7 @@ def check():
     minutes, stop_name = service.check_ride(route, stop, agency)
 
     response = ResponseConstants.SUCCESS_RESP
-    response['message'] = {'minutes': minutes, 'stop_name': stop_name}
+    response['message'] = {'minutes': minutes, 'stop_name': stop_name or ''}
     return __respond(response)
 
 
@@ -96,12 +91,16 @@ def get():
     minutes, stop_name = service.check_ride(route, stop, agency)
 
     response = ResponseConstants.SUCCESS_RESP
-    response['message'] = {'minutes': minutes, 'stop_name': stop_name, 'route': route, 'stop': stop}
+    response['message'] = {'minutes': minutes, 'stop_name': stop_name or '', 'route': route, 'stop': stop}
     return __respond(response)
 
 
-def __respond(error_constant, params=[]):
-    params = map((lambda x: 'None' if not x else x), params)
+def __respond(error_constant, params=None):
+    if params:
+        params = map((lambda x: 'None' if not x else x), params)
+    else:
+        params = []
+
     if isinstance(error_constant['message'], dict):
         message = error_constant['message']
     else:

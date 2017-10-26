@@ -1,6 +1,6 @@
 class ResponseConstants:
     SUCCESS_RESP = {
-        'error': 10000,
+        'error': 0,
         'status': 200,
         'message': ''
     }
