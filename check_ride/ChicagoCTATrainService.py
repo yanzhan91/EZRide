@@ -48,11 +48,11 @@ class ChicagoCTATrainService(CheckRideService):
             minutes.append(int(arrival.total_seconds() / 60))
 
         stop_name = predictions[0]['staNm']
-        stop_name.replaceFirst('-', ' and ')
-        stop_name.replaceFirst('/', ' and ')
+        stop_name.replace('-', ' and ', 1)
+        stop_name.replace('/', ' and ', 1)
 
         return minutes, stop_name
 
 if __name__ == '__main__':
     os.environ['chicago_cta_train_api_key'] = 'api_key'
-    print ChicagoCTATrainService().check_ride('green', '30213', 'chicago-cta-train')
+    print ChicagoCTATrainService().check_ride('red', '30267', 'chicago-cta-train')
