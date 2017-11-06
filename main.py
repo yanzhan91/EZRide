@@ -113,7 +113,7 @@ def __respond(error_constant, params=None):
         message = '%s%s%s' % (error_constant['message'], ': ' if len(params) else '', ', '.join(params))
     json = jsonify(error_code=error_constant['error'], message=message).get_data(as_text=True)
     if error_constant['status'] in [400, 500]:
-        logging.warn(json)
+        log.warn(json)
     return Response(json, status=error_constant['status'], mimetype='application/json')
 
 
