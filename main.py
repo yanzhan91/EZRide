@@ -15,7 +15,7 @@ def check():
     stop = request.args.get('stop')
     agency = request.args.get('agency')
     
-    log.info('route=%s, stop=%s, agency=%s' % (route, stop, agency)
+    log.info('route=%s, stop=%s, agency=%s' % (route, stop, agency))
 
     if not route or not stop or not agency:
         return __respond(ResponseConstants.CHK_MISSING_PARAM, [route, stop, agency])
@@ -58,7 +58,7 @@ def add():
     except KeyError:
         agency = None
                                              
-    log.info('user=%s, route=%s, stop=%s, preset=%s, agency=%s' % (user, route, stop, preset, agency)
+    log.info('user=%s, route=%s, stop=%s, preset=%s, agency=%s' % (user, route, stop, preset, agency))
 
     if not user:
         return __respond(ResponseConstants.ALL_MISSING_USER)
@@ -80,7 +80,7 @@ def get():
     preset = request.args.get('preset') or '1'
     agency = request.args.get('agency')
                                              
-    log.info('user=%s, preset=%s, agency=%s' % (user, preset, agency)
+    log.info('user=%s, preset=%s, agency=%s' % (user, preset, agency))
 
     if not user:
         return __respond(ResponseConstants.ALL_MISSING_USER)
