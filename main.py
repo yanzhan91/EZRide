@@ -31,7 +31,7 @@ def check():
     return __respond(response)
 
 
-@app.route('/add', methods=['POST'])log.info('route=%s, stop=%s, agency=%s' % (route, stop, agency)
+@app.route('/add', methods=['POST'])
 def add():
     try:
         user = request.form['user']
