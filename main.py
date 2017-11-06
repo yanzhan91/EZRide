@@ -1,4 +1,4 @@
-import logging
+import logging as log
 import os
 from flask import Flask, request, Response, jsonify
 from check_ride.CheckRideServiceFactory import CheckRideServiceFactory
@@ -14,6 +14,8 @@ def check():
     route = request.args.get('route')
     stop = request.args.get('stop')
     agency = request.args.get('agency')
+    
+    log.info('route=%s, stop=%s, agency=%s' % (route, stop, agency)
 
     if not route or not stop or not agency:
         return __respond(ResponseConstants.CHK_MISSING_PARAM, [route, stop, agency])
@@ -29,7 +31,7 @@ def check():
     return __respond(response)
 
 
-@app.route('/add', methods=['POST'])
+@app.route('/add', methods=['POST'])log.info('route=%s, stop=%s, agency=%s' % (route, stop, agency)
 def add():
     try:
         user = request.form['user']
@@ -55,6 +57,8 @@ def add():
         agency = request.form['agency']
     except KeyError:
         agency = None
+                                             
+    log.info('user=%s, route=%s, stop=%s, preset=%s, agency=%s' % (user, route, stop, preset, agency)
 
     if not user:
         return __respond(ResponseConstants.ALL_MISSING_USER)
@@ -75,6 +79,8 @@ def get():
     user = request.args.get('user')
     preset = request.args.get('preset') or '1'
     agency = request.args.get('agency')
+                                             
+    log.info('user=%s, preset=%s, agency=%s' % (user, preset, agency)
 
     if not user:
         return __respond(ResponseConstants.ALL_MISSING_USER)
