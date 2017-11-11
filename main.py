@@ -28,6 +28,8 @@ def check():
 
     response = ResponseConstants.SUCCESS_RESP
     response['message'] = {'minutes': minutes, 'stop_name': stop_name or ''}
+    
+    log.info('Response=%s' % response)
     return __respond(response)
 
 
@@ -71,6 +73,8 @@ def add():
 
     response = ResponseConstants.SUCCESS_RESP
     response['message'] = 'success'
+    
+    log.info('Response=%s' % response)
     return __respond(response)
 
 
@@ -98,6 +102,8 @@ def get():
 
     response = ResponseConstants.SUCCESS_RESP
     response['message'] = {'minutes': minutes, 'stop_name': stop_name or '', 'route': route, 'stop': stop}
+    
+    log.info('Response=%s' % response)
     return __respond(response)
 
 
