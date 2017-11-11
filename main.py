@@ -77,7 +77,7 @@ def add():
 @app.route('/get', methods=['GET'])
 def get():
     user = request.args.get('user')
-    preset = request.args.get('preset') or '1'
+    preset = request.args.get('preset') or 'A'
     agency = request.args.get('agency')
                                              
     log.info('user=%s, preset=%s, agency=%s' % (user, preset, agency))
