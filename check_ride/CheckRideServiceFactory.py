@@ -15,8 +15,8 @@ class CheckRideServiceFactory(object):
             return ChicagoCTATrainService()
         if agency == 'austin-metro-bus':
             return AustinMetroBusService()
-        if agency == 'sanfrancisco-muni-bus':
+        if agency == 'san-francisco-muni-bus':
             return SanFranciscoMuniBusService()
-        if agency == 'losangeles-metro-bus':
+        if agency == 'los-angeles-metro-bus':
             return LosAngelesMetroBusService()
         return None
