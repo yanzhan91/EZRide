@@ -2,6 +2,7 @@ from check_ride.CheckRideService import CheckRideService
 import requests
 import os
 import pytz
+import re
 from datetime import datetime
 
 
@@ -29,10 +30,12 @@ class PortlandTriMetBusService(CheckRideService):
         stop_name = result_set['location'][0]['desc']
         if stop_name:
             stop_name = stop_name.replace('&', 'and')
+            stop_name = re.sub(r'(NE|NW|SE|SW)\s?', '', stop_name)
+            stop_name = re.sub(r'\s?(N\s|S\s|W\s|E\s)', ' ', stop_name)
 
         return minutes, stop_name
 
 
 if __name__ == '__main__':
     os.environ['portland_tri_met_bus_api_key'] = 'portland_tri_met_bus_api_key'
-    print PortlandTriMetBus().check_ride('9', '999', 'portland-tri-met-bus')
+    print PortlandTriMetBusService().check_ride('57', '284', 'portland-tri-met-bus')
