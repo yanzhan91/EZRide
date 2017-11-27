@@ -5,7 +5,7 @@ import pytz
 from datetime import datetime
 
 
-class PortlandTriMetBus(CheckRideService):
+class PortlandTriMetBusService(CheckRideService):
     def check_ride(self, route, stop, agency):
         response = requests.get('https://developer.trimet.org/ws/V1/arrivals?'
                                 'json=true&appID=%s&locIDs=%s' %
