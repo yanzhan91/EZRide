@@ -3,6 +3,7 @@ import requests
 import os
 import pytz
 import re
+import logging as log
 from datetime import datetime
 
 
@@ -22,10 +23,14 @@ class PortlandTriMetBusService(CheckRideService):
         arrivals = result_set['arrival']
 
         for arrival in arrivals:
-            time = pytz.timezone('US/Pacific').localize(
-                datetime.strptime(arrival['estimated'][:-5], '%Y-%m-%dT%H:%M:%S.%f'), is_dst=None).astimezone(pytz.utc) - \
-                      pytz.utc.localize(datetime.utcnow(), is_dst=None)
-            minutes.append(int(time.total_seconds() / 60))
+            try:
+                if str(arrival['route']) == route and 'estimated' in arrival:
+                    time = pytz.timezone('US/Pacific').localize(
+                        datetime.strptime(arrival['estimated'][:-5], '%Y-%m-%dT%H:%M:%S.%f'), is_dst=None).astimezone(pytz.utc) - \
+                              pytz.utc.localize(datetime.utcnow(), is_dst=None)
+                    minutes.append(int(time.total_seconds() / 60))
+            except Exception as e:
+                log.error(e)
 
         stop_name = result_set['location'][0]['desc']
         if stop_name:
