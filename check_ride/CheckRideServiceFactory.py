@@ -4,6 +4,7 @@ from AustinMetroBusService import AustinMetroBusService
 from SanFranciscoMuniBusService import SanFranciscoMuniBusService
 from LosAngelesMetroBusService import LosAngelesMetroBusService
 from PortlandTriMetBusService import PortlandTriMetBusService
+from DCMetroBusService import DCMetroBusService
 
 
 class CheckRideServiceFactory(object):
@@ -22,4 +23,6 @@ class CheckRideServiceFactory(object):
             return LosAngelesMetroBusService()
         if agency == 'portland-tri-met-bus':
             return PortlandTriMetBusService()
+        if agency == 'dc-metro-bus':
+            return DCMetroBusService()
         return None
