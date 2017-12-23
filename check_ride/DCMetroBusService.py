@@ -29,7 +29,7 @@ class DCMetroBusService(CheckRideService):
         if stop_name:
             stop_name = self.__format_stop_names(stop_name)
 
-        return minutes, stop_name
+        return minutes[:2], stop_name
 
     def __format_stop_names(self, name):
         name = re.sub(r'\+', 'and', name)
